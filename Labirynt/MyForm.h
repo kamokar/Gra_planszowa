@@ -11,15 +11,7 @@ namespace Labirynt {
 
 
 	public ref class MyForm : public System::Windows::Forms::Form
-	{
-
-		
-		
-		
-		
-		
-		
-		
+	{		
 		static int sila1 = 1;
 		static int sila2 = 1;
 		static int moc1 = 1;
@@ -32,9 +24,9 @@ namespace Labirynt {
 		static int gracz = 1;
 		static int Sekundy = 60;
 		static int Minuty = 59;
+		static int wygral = 0;
 		String^ Sec;
 		String^ Min;
-
 
 	private: System::Windows::Forms::Label^  label7;
 	private: System::Windows::Forms::Label^  label8;
@@ -48,11 +40,7 @@ namespace Labirynt {
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  lTura;
 	private: System::Windows::Forms::Label^  lGracz;
-
-
 	private: System::Windows::Forms::Label^  lGracztxt;
-
-
 	private: System::Windows::Forms::Label^  label9;
 	private: System::Windows::Forms::Label^  label10;
 	private: System::Windows::Forms::Label^  label11;
@@ -86,6 +74,8 @@ namespace Labirynt {
 	private: System::Windows::Forms::Button^  button17;
 	private: System::Windows::Forms::Timer^  timer2;
 	private: System::Windows::Forms::PictureBox^  pictureBox7;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Label^  lCzas;
 	
 	public:
@@ -169,6 +159,8 @@ namespace Labirynt {
 			this->button17 = (gcnew System::Windows::Forms::Button());
 			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
@@ -714,6 +706,34 @@ namespace Labirynt {
 			this->pictureBox7->TabIndex = 44;
 			this->pictureBox7->TabStop = false;
 			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->BackColor = System::Drawing::Color::Transparent;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 36, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->label3->ForeColor = System::Drawing::Color::Red;
+			this->label3->Location = System::Drawing::Point(115, 130);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(765, 55);
+			this->label3->TabIndex = 45;
+			this->label3->Text = L"Koniec gry. Wygra³ gracz numer: ";
+			this->label3->Visible = false;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->BackColor = System::Drawing::Color::Transparent;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 36, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->label4->ForeColor = System::Drawing::Color::Red;
+			this->label4->Location = System::Drawing::Point(882, 130);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(52, 55);
+			this->label4->TabIndex = 46;
+			this->label4->Text = L"1";
+			this->label4->Visible = false;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -721,6 +741,8 @@ namespace Labirynt {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(1104, 697);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->label3);
 			this->Controls->Add(this->pictureBox7);
 			this->Controls->Add(this->button10);
 			this->Controls->Add(this->button11);
@@ -783,20 +805,60 @@ namespace Labirynt {
 		}
 #pragma endregion
 
+
+
+	void koniec() {
+		timer1->Enabled = false;
+		label3->Visible = true;
+		label4->Visible = true;
+		if (punkty1 > punkty2)
+		{
+			wygral = 1;
+		}
+		else if (punkty1 < punkty2)
+		{
+			wygral = 2;
+		}
+		else if (sila1 + moc1 + pz1 > sila2 + moc2 + pz2)
+		{
+			wygral = 1;
+		}
+		else if (sila1 + moc1 + pz1 < sila2 + moc2 + pz2)
+		{
+			wygral = 2;
+		}
+		else
+		{
+			wygral = 3;
+		}
+		
+		if (wygral == 3)
+			label4->Text = "Remis!";
+		else
+		label4->Text = Convert::ToString(wygral);
+
+	}
+
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (wygral==0) {
 		gracz++;
 		if (gracz==3)
 		{
 			gracz = 1;
 			tura++;
-//			if (tura>5) koniec gry
+			if (tura > 50) koniec();
 		}
+	}
 	}
 
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+
+		if (wygral == 0) {
+
 		Sekundy--;
 		if (Sekundy == 0)
 		{
+			if (Minuty == 0) koniec();
 			Sekundy = 60;
 			Minuty--;
 		}
@@ -804,10 +866,11 @@ namespace Labirynt {
 		Min = Convert::ToString(Minuty);
 
 		lCzas->Text = Min + ":" + Sec;
+		}
 	}
 
 	private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
-
+		if (wygral == 0) {
 		lsila1->Text = Convert::ToString(sila1);
 		lsila2->Text = Convert::ToString(sila2);
 		lmoc1->Text = Convert::ToString(moc1);
@@ -818,6 +881,7 @@ namespace Labirynt {
 		lpunkty2->Text = Convert::ToString(punkty2);
 		lTura->Text = Convert::ToString(tura);
 		lGracz->Text = Convert::ToString(gracz);
+		}
 	}
 
 
