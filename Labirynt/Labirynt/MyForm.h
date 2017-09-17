@@ -846,7 +846,7 @@ namespace Labirynt {
 		{
 			gracz = 1;
 			tura++;
-			if (tura > 5) koniec();
+			if (tura > 50) koniec();
 		}
 	}
 	}
