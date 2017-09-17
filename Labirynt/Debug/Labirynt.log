@@ -1,0 +1,4 @@
+﻿  MyForm.cpp
+  MyForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
+  Labirynt.vcxproj -> C:\Users\Kamo\Documents\GitHub\Gra_planszowa\Labirynt\Debug\Labirynt.exe
+  Labirynt.vcxproj -> C:\Users\Kamo\Documents\GitHub\Gra_planszowa\Labirynt\Debug\Labirynt.pdb (Partial PDB)
